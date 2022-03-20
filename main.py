@@ -57,7 +57,18 @@ class Window(pyglet.window.Window):
 
         # create shader
         self.shader = shader.Shader('vert.glsl', 'frag.glsl')
+        self.shader_matrix_location = self.shader.find_uniform(b'matrix')
         self.shader.use()
+
+        # create matrices, Model View and Projection
+        self.mv_matrix = matrix.Matrix()
+        self.p_matrix = matrix.Matrix()
+
+        self.x = 0
+        pyglet.clock.schedule_interval(self.update, 1.0 / 60)
+
+    def update(self, delta_time):
+        self.x += delta_time
 
     def on_draw(self):
         gl.glClearColor(0.0, 0.0, 0.0, 1.0)
