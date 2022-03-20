@@ -10,7 +10,7 @@ class BlockType:
         self.name = name
         self.vertex_positions = numbers.vertex_positions
         self.indices = numbers.indices
-
+        self.text_coords = numbers.tex_coords[:]
 
         for texture in block_face_texture.values():
             texture_manager.add_texture(texture)

@@ -53,9 +53,9 @@ class Window(pyglet.window.Window):
         gl.glBindVertexArray(self.vao)
 
         # create VBO or vertex buffer object
-        self.vbo = gl.GLuint(0)
-        gl.glGenBuffers(1, ctypes.byref(self.vbo))
-        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
+        self.vertex_position_vbo = gl.GLuint(0)
+        gl.glGenBuffers(1, ctypes.byref(self.vertex_position_vbo))
+        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vertex_position_vbo)
 
         gl.glBufferData(
             gl.GL_ARRAY_BUFFER,
@@ -65,6 +65,20 @@ class Window(pyglet.window.Window):
 
         gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, 0)
         gl.glEnableVertexAttribArray(0)
+
+        # create text coord vbo
+        self.text_coord_vbo = gl.GLuint(0)
+        gl.glGenBuffers(1, ctypes.byref(self.text_coord_vbo))
+        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.text_coord_vbo)
+
+        gl.glBufferData(
+            gl.GL_ARRAY_BUFFER,
+            ctypes.sizeof(gl.GLfloat * len(self.grass.text_coords)),
+            (gl.GLfloat * len(self.grass.text_coords))(*self.grass.text_coords),
+            gl.GL_STATIC_DRAW
+        )
+        gl.glVertexAttribPointer(1, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, 0)
+        gl.glEnableVertexAttribArray(1)
 
         # create IBO or index bugger object
         self.ibo = gl.GLuint(0)
