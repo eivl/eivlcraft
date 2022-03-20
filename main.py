@@ -81,7 +81,7 @@ class Window(pyglet.window.Window):
         self.mv_matrix.rotate_2d(self.x, math.sin(self.x / 3 * 2) / 2)
 
         # modelviewprojection matrix
-        mvp_matrix = self.mv_matrix * self.p_matrix
+        mvp_matrix = self.p_matrix * self.mv_matrix
         self.shader.uniform_matrix(self.shader_matrix_location, mvp_matrix)
 
         gl.glClearColor(1.0, 1.0, 1.0, 1.0)
