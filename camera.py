@@ -1,6 +1,7 @@
 import math
 import matrix
 
+
 class Camera:
     def __init__(self, shader, width, height):
         self.width = width
@@ -25,14 +26,14 @@ class Camera:
         self.p_matrix.load_identity()
         self.p_matrix.perspective(90, self.width / self.height, 0.1, 500)
 
-        # create modelview matrix
+        # create model view matrix
         self.mv_matrix.load_identity()
         self.mv_matrix.rotate_2d(-(self.rotation[0] - math.tau / 4),
                                  self.rotation[1])
         self.mv_matrix.translate(-self.position[0], -self.position[1],
                                  self.position[2])
 
-        # modelviewprojection matrix
+        # model view projection matrix
         mvp_matrix = self.p_matrix * self.mv_matrix
         self.shader.uniform_matrix(self.shader_matrix_location, mvp_matrix)
 
