@@ -11,6 +11,7 @@ class BlockType:
         self.vertex_positions = numbers.vertex_positions
         self.indices = numbers.indices
         self.text_coords = numbers.tex_coords[:]
+        self.shading_values = numbers.shading
 
         def set_block_face(side, texture):
             for vertex in range(4):
