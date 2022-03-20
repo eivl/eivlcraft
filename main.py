@@ -71,6 +71,11 @@ class Window(pyglet.window.Window):
         self.x += delta_time
 
     def on_draw(self):
+        # create projection matrix
+
+        self.p_matrix.load_identity()
+        self.p_matrix.perspective(90, self.width / self.height, 0.1, 500)
+
         gl.glClearColor(1.0, 1.0, 1.0, 1.0)
         self.clear()
 
