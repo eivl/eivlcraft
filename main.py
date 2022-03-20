@@ -39,8 +39,8 @@ class Window(pyglet.window.Window):
 
         gl.glBufferData(
             gl.GL_ARRAY_BUFFER,
-            ctypes.sizeof(gl.GLfloat * len(vertex_positions)),
-            (gl.GLfloat * len(vertex_positions)) (*vertex_positions),
+            ctypes.sizeof(gl.GLfloat * len(self.grass.vertex_positions)),
+            (gl.GLfloat * len(self.grass.vertex_positions))(*self.grass.vertex_positions),
             gl.GL_STATIC_DRAW)
 
         gl.glVertexAttribPointer(0, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, 0)
@@ -53,8 +53,8 @@ class Window(pyglet.window.Window):
 
         gl.glBufferData(
             gl.GL_ELEMENT_ARRAY_BUFFER,
-            ctypes.sizeof(gl.GLuint * len(indices)),
-            (gl.GLuint * len(indices)) (*indices),
+            ctypes.sizeof(gl.GLuint * len(self.grass.indices)),
+            (gl.GLuint * len(self.grass.indices))(*self.grass.indices),
             gl.GL_STATIC_DRAW)
 
         # create shader
@@ -79,19 +79,20 @@ class Window(pyglet.window.Window):
 
         # create modelview matrix
         self.mv_matrix.load_identity()
-        self.mv_matrix.translate(0, 0, -1)
+        self.mv_matrix.translate(0, 0, -2)
         self.mv_matrix.rotate_2d(self.x, math.sin(self.x / 3 * 2) / 2)
 
         # modelviewprojection matrix
         mvp_matrix = self.p_matrix * self.mv_matrix
         self.shader.uniform_matrix(self.shader_matrix_location, mvp_matrix)
 
+        gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glClearColor(1.0, 1.0, 1.0, 1.0)
         self.clear()
 
         gl.glDrawElements(
             gl.GL_TRIANGLES,
-            len(indices),
+            len(self.grass.indices),
             gl.GL_UNSIGNED_INT,
             None
         )
@@ -103,7 +104,7 @@ class Window(pyglet.window.Window):
 
 class Game:
     def __init__(self):
-        self.config = gl.Config(double_buffer=True, major_version=3)
+        self.config = gl.Config(double_buffer=True, major_version=3, minor_version=3, depth_size=16)
         self.window = Window(config=self.config,
                              width=800,
                              height=600,
