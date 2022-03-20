@@ -20,3 +20,7 @@ class TextureManager:
             self.texture_width, self.texture_height, self.max_texture,
             0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, None
         )
+
+    def generate_mipmaps(self):
+        gl.glGenerateMipmap(gl.GL_TEXTURE_2D_ARRAY)
+
