@@ -7,23 +7,25 @@ import math
 
 import matrix
 import shader
-
-vertex_positions = [
-    -0.5, 0.5, 0.0,
-    -0.5, -0.5, 0.0,
-    0.5, -0.5, 0.0,
-    0.5, 0.5, 0.0,
-]
-
-indices = [
-    0, 1, 2,
-    0, 2, 3,
-]
+import block_type
 
 
 class Window(pyglet.window.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        # create blocks
+        self.cobblestone = block_type.BlockType('cobblestone', {'all': 'cobblestone'})
+        self.grass = block_type.BlockType('grass', {'top': 'grass',
+                                                    'bottom': 'dirt',
+                                                    'sides': 'grass_side'})
+        self.dirt = block_type.BlockType('dirt', {'all': 'dirt'})
+        self.stone = block_type.BlockType('stone', {'all': 'stone'})
+        self.sand = block_type.BlockType('sand', {'all': 'sand'})
+        self.planks = block_type.BlockType('planks', {'all': 'planks'})
+        self.log = block_type.BlockType('log', {'top': 'top_log',
+                                                'bottom': 'log_top',
+                                                'sides': 'log_sides'})
 
         # create VAO or vertex array object
         self.vao = gl.GLuint(0)
