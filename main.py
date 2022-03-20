@@ -8,6 +8,7 @@ import math
 import matrix
 import shader
 import block_type
+import texture_manager
 
 
 class Window(pyglet.window.Window):
@@ -15,17 +16,36 @@ class Window(pyglet.window.Window):
         super().__init__(**kwargs)
 
         # create blocks
-        self.cobblestone = block_type.BlockType('cobblestone', {'all': 'cobblestone'})
-        self.grass = block_type.BlockType('grass', {'top': 'grass',
-                                                    'bottom': 'dirt',
-                                                    'sides': 'grass_side'})
-        self.dirt = block_type.BlockType('dirt', {'all': 'dirt'})
-        self.stone = block_type.BlockType('stone', {'all': 'stone'})
-        self.sand = block_type.BlockType('sand', {'all': 'sand'})
-        self.planks = block_type.BlockType('planks', {'all': 'planks'})
-        self.log = block_type.BlockType('log', {'top': 'top_log',
-                                                'bottom': 'log_top',
-                                                'sides': 'log_sides'})
+        self.texture_manager = texture_manager.TextureManager(16, 16, 256)
+
+        self.cobblestone = block_type.BlockType(self.texture_manager,
+                                                'cobblestone',
+                                                {'all': 'cobblestone'})
+        self.grass = block_type.BlockType(self.texture_manager,
+                                          'grass',
+                                          {'top': 'grass',
+                                           'bottom': 'dirt',
+                                           'sides': 'grass_side'}
+                                          )
+        self.dirt = block_type.BlockType(self.texture_manager,
+                                         'dirt',
+                                         {'all': 'dirt'})
+        self.stone = block_type.BlockType(self.texture_manager,
+                                          'stone',
+                                          {'all': 'stone'})
+        self.sand = block_type.BlockType(self.texture_manager,
+                                         'sand',
+                                         {'all': 'sand'})
+        self.planks = block_type.BlockType(self.texture_manager,
+                                           'planks',
+                                           {'all': 'planks'})
+        self.log = block_type.BlockType(self.texture_manager,
+                                        'log',
+                                        {'top': 'log_top',
+                                         'bottom': 'log_top',
+                                         'sides': 'log_side'}
+                                        )
+        self.texture_manager.generate_mipmaps()
 
         # create VAO or vertex array object
         self.vao = gl.GLuint(0)
@@ -60,6 +80,7 @@ class Window(pyglet.window.Window):
         # create shader
         self.shader = shader.Shader('vert.glsl', 'frag.glsl')
         self.shader_matrix_location = self.shader.find_uniform(b'matrix')
+        self.shader_sampler_location = self.shader.find_uniform(b'texture_array_sampler')
         self.shader.use()
 
         # create matrices, Model View and Projection
@@ -86,6 +107,12 @@ class Window(pyglet.window.Window):
         mvp_matrix = self.p_matrix * self.mv_matrix
         self.shader.uniform_matrix(self.shader_matrix_location, mvp_matrix)
 
+        # Bind textures
+        gl.glActiveTexture(gl.GL_TEXTURE0)
+        gl.glBindTexture(gl.GL_TEXTURE_2D_ARRAY, self.texture_manager.texture_array)
+        gl.glUniform1i(self.shader_sampler_location, 0)
+
+        # draw stuff
         gl.glEnable(gl.GL_DEPTH_TEST)
         gl.glClearColor(1.0, 1.0, 1.0, 1.0)
         self.clear()
