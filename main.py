@@ -71,7 +71,7 @@ class Window(pyglet.window.Window):
         self.x += delta_time
 
     def on_draw(self):
-        gl.glClearColor(0.0, 0.0, 0.0, 1.0)
+        gl.glClearColor(1.0, 1.0, 1.0, 1.0)
         self.clear()
 
         gl.glDrawElements(
