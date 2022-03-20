@@ -82,7 +82,7 @@ class Window(pyglet.window.Window):
         gl.glVertexAttribPointer(1, 3, gl.GL_FLOAT, gl.GL_FALSE, 0, 0)
         gl.glEnableVertexAttribArray(1)
 
-        # create IBO or index bugger object
+        # create IBO or index buffer object
         self.ibo = gl.GLuint(0)
         gl.glGenBuffers(1, self.ibo)
         gl.glBindBuffer(gl.GL_ELEMENT_ARRAY_BUFFER, self.ibo)
