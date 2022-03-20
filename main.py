@@ -3,14 +3,16 @@ import pyglet
 pyglet.options["shadow_window"] = False
 pyglet.options["debug_gl"] = False
 import pyglet.gl as gl
+import math
 
+import matrix
 import shader
 
 vertex_positions = [
-    -0.5, 0.5, 1.0,
-    -0.5, -0.5, 1.0,
-    0.5, -0.5, 1.0,
-    0.5, 0.5, 1.0,
+    -0.5, 0.5, 0.0,
+    -0.5, -0.5, 0.0,
+    0.5, -0.5, 0.0,
+    0.5, 0.5, 0.0,
 ]
 
 indices = [
@@ -90,4 +92,3 @@ class Game:
 if __name__ == '__main__':
     game = Game()
     game.run()
-    
